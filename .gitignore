@@ -1,0 +1,20 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Secrets
+*.json
+sa-key.json
+key
+
+
+# kubeconfig
+.kube/
+
+# OS
+.DS_Store
+
+dh.sh
+
