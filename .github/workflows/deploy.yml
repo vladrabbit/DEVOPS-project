@@ -58,6 +58,6 @@ jobs:
         run: |
           yc managed-kubernetes cluster get-credentials k8s-cluster --external
 
-      - name: Deploy
+      - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/
