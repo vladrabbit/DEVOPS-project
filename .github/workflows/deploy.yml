@@ -1,12 +1,13 @@
 name: CI/CD
 
-# Триггеры: пуш в main и создание тегов v*
+# Триггеры: пуш в main и пуш тегов вида v*
 on:
   push:
     branches: [ "main" ]
     tags:
       - "v*"
 
+# Настройки среды
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -31,11 +32,11 @@ jobs:
       - name: Docker auth
         run: yc container registry configure-docker
 
-      - name: Build Docker image
+      - name: Build image
         run: |
           docker build -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/devops-nginx:latest ./app
 
-      - name: Push Docker image
+      - name: Push image
         run: |
           docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/devops-nginx:latest
 
@@ -59,11 +60,7 @@ jobs:
           yc config set service-account-key key.json
 
       - name: Get kubeconfig
-        run: |
-          yc managed-kubernetes cluster get-credentials k8s-cluster --external
+        run: yc managed-kubernetes cluster get-credentials k8s-cluster --external
 
-      - name: Deploy to Kubernetes
-        run: |
-          echo "Deploying to Kubernetes..."
-          kubectl apply -f k8s/ --validate=true
-          kubectl get pods -o wide
+      - name: Deploy to K8s
+        run: kubectl apply -f k8s/
