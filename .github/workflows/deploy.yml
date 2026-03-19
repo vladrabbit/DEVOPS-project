@@ -51,8 +51,10 @@ jobs:
 
       - name: Auth YC
         run: |
-          echo '${{ secrets.YC_SERVICE_ACCOUNT_KEY }}' > key.json
+          echo "$YC_KEY" > key.json
           yc config set service-account-key key.json
+        env:
+          YC_KEY: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
 
       - name: Get kubeconfig
         run: |
