@@ -1,10 +1,14 @@
 name: CI/CD
 
+# Триггеры: пуш в main и создание тегов v*
 on:
   push:
     branches: [ "main" ]
     tags:
       - "v*"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -21,17 +25,17 @@ jobs:
 
       - name: Auth YC
         run: |
-          echo '${{ secrets.YC_SERVICE_ACCOUNT_KEY }}' > key.json
+          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > key.json
           yc config set service-account-key key.json
 
       - name: Docker auth
         run: yc container registry configure-docker
 
-      - name: Build image
+      - name: Build Docker image
         run: |
           docker build -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/devops-nginx:latest ./app
 
-      - name: Push image
+      - name: Push Docker image
         run: |
           docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/devops-nginx:latest
 
@@ -51,7 +55,7 @@ jobs:
 
       - name: Auth YC
         run: |
-          echo '${{ secrets.YC_SERVICE_ACCOUNT_KEY }}' > key.json
+          echo "${{ secrets.YC_SERVICE_ACCOUNT_KEY }}" > key.json
           yc config set service-account-key key.json
 
       - name: Get kubeconfig
@@ -60,4 +64,6 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/
+          echo "Deploying to Kubernetes..."
+          kubectl apply -f k8s/ --validate=true
+          kubectl get pods -o wide
