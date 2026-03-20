@@ -20,4 +20,5 @@ dh.sh
 
 .env
 *.env
+tasks.md
 
