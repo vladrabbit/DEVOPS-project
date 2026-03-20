@@ -60,7 +60,7 @@ jobs:
 
       - name: Get kubeconfig
         run: |
-          yc managed-kubernetes cluster get-credentials cat49r412ai2flregjga --external
+          yc managed-kubernetes cluster get-credentials catjq92ihk29p5bgbg0u --external
 
       - name: Deploy to Kubernetes
         run: |
