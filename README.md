@@ -328,6 +328,15 @@ yc container registry list
 ![scr-38](https://github.com/vladrabbit/DEVOPS-project/blob/main/SCR/grafana.png)
 
 
+#### 14. CI/CD
+
+- CI/CD пайплайн настроен на пуши в main ветку. При каждом обновлении кода происходит автоматический деплой приложения в Kubernetes кластер.
+
+![scr-39]()
+
+- Workflow успешно выполняет: сборку образа, пуш в Container Registry, обновление деплоймента в кластере и проверку статуса
+
+![scr-40]()
 
 
 
