@@ -332,11 +332,11 @@ yc container registry list
 
 - CI/CD пайплайн настроен на пуши в main ветку. При каждом обновлении кода происходит автоматический деплой приложения в Kubernetes кластер.
 
-![scr-39]()
+![scr-39](https://github.com/vladrabbit/DEVOPS-project/blob/main/SCR/CICD-1.png)
 
 - Workflow успешно выполняет: сборку образа, пуш в Container Registry, обновление деплоймента в кластере и проверку статуса
 
-![scr-40]()
+![scr-40](https://github.com/vladrabbit/DEVOPS-project/blob/main/SCR/CICD-2.png)
 
 
 
