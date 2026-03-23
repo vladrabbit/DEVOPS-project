@@ -1,0 +1,61 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Secrets
+*.json
+sa-key.json
+key
+
+
+# kubeconfig
+.kube/
+
+# OS
+.DS_Store
+
+dh.sh
+
+.env
+*.env
+tasks.md
+
+# Terraform
+**/.terraform/
+**/terraform.tfstate*
+**/terraform.tfvars
+**/*.tfvars
+**/key.json
+**/terraform.log
+**/.s3_*
+
+# Local files
+*.log
+*.backup
+
+# Terraform
+**/.terraform/
+**/terraform.tfstate*
+**/terraform.tfvars
+**/*.tfvars
+**/key.json
+**/*.pem
+**/terraform.log
+
+# Local files
+*.log
+*.backup
+.s3_*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+deploy.sh
+
+key.pem
+**/key.pem

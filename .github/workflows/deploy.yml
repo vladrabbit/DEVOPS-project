@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Docker
+        run: |
+          echo "${{ secrets.YC_OAUTH_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
+      
+      - name: Setup kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+      
+      - name: Setup YC CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH
+      
+      - name: Configure YC
+        run: |
+          yc config set token ${{ secrets.YC_OAUTH_TOKEN }}
+          yc config set cloud-id b1g9acd7na9ei6dvlt8k
+          yc config set folder-id b1gfstkmnmnullc78emb
+      
+      - name: Get kubeconfig
+        run: yc managed-kubernetes cluster get-credentials k8s-cluster --external --force
+      
+      - name: Build and push
+        run: |
+          docker build -t cr.yandex/crpumur24q4gj9d4dcie/devops-app:latest ./app
+          docker push cr.yandex/crpumur24q4gj9d4dcie/devops-app:latest
+      
+      - name: Deploy
+        run: |
+          kubectl set image deployment/devops-app \
+            app=cr.yandex/crpumur24q4gj9d4dcie/devops-app:latest \
+            -n default
+          kubectl rollout status deployment/devops-app -n default --timeout=3m
